@@ -10,9 +10,9 @@ const User = sequelize.define(
     email: { type: DataTypes.STRING, unique: true, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
     role: {
-      type: DataTypes.ENUM("admin", "librarian", "member"),
+      type: DataTypes.ENUM("Admin", "Librarian", "Member"),
       allowNull: false,
-      defaultValue: "member",
+      defaultValue: "Member",
     },
     isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
   },

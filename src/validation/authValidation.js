@@ -14,7 +14,7 @@ export const registerSchema = Joi.object({
     "string.min": "Password must be at least 6 characters long.",
   }),
   role: Joi.string()
-    .valid("admin", "librarian", "member")
+    .valid("Admin", "Librarian", "Member")
     .default("member")
     .messages({
       "any.only": "Role must be either admin, librarian, or member.",

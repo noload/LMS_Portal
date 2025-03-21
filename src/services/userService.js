@@ -76,12 +76,14 @@ class UserService {
 
   async getUsers(page = 1, limit = 10) {
     try {
+      page = parseInt(page);
+      limit = parseInt(limit);
+
       const offset = (page - 1) * limit;
       const { rows: users, count: totalItems } = await userRepository.getAll({
         limit,
         offset,
       });
-
       return {
         data: users,
         pagination: {

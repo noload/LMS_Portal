@@ -6,6 +6,7 @@ dotenv.config();
 class AuthMiddleware {
   static authenticate(req, res, next) {
     const token = req.header("Authorization");
+    console.log(token);
     if (!token) {
       return res
         .status(401)
@@ -26,6 +27,8 @@ class AuthMiddleware {
 
   static authorizeRoles(...roles) {
     return (req, res, next) => {
+      console.log(req.user);
+      console.log(roles);
       if (!roles.includes(req.user.role)) {
         return res.status(403).json({ message: "Access Denied" });
       }

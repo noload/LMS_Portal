@@ -26,6 +26,8 @@ class UserRepository {
       limit,
       offset,
       order: [["createdAt", "DESC"]],
+      raw: true,
+      attributes: { exclude: ["password"] },
     });
   }
 }
