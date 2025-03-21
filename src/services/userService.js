@@ -1,53 +1,100 @@
 import bcrypt from "bcryptjs";
 import userRepository from "../repositories/userRepository.js";
+import { generateToken } from "./jwtService.js";
+import AppError from "../utils/errorHandler.js";
 
 class UserService {
   async createUser(userData) {
-    const userExist = await userRepository.findByEmail(userData.email);
+    const { email } = userData;
+    const userExist = await userRepository.findByEmail(email);
     if (userExist) {
-      throw new Error("User already exist");
+      throw new AppError("User already exists", 400);
     }
-    return await userRepository.createUser(userData);
+    return await userRepository.create(userData);
+  }
+
+  async login(user) {
+    const { email, password } = user;
+    const userExist = await userRepository.findByEmail(email);
+    if (!userExist) {
+      throw new AppError("User not found", 404);
+    }
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      userExist.password
+    );
+
+    if (!isPasswordCorrect) {
+      throw new AppError("Invalid credentials", 401);
+    }
+
+    return generateToken(userExist);
   }
 
   async getUserByEmail(email) {
-    return await userRepository.findByEmail(email);
+    try {
+      return await userRepository.findByEmail(email);
+    } catch (error) {
+      console.error("Error in getUserByEmail:", error.message);
+      throw new Error("Failed to fetch user by email");
+    }
   }
 
   async getUserById(id) {
-    return await userRepository.findUserById(id);
+    try {
+      return await userRepository.findUserById(id);
+    } catch (error) {
+      console.error("Error in getUserById:", error.message);
+      throw new Error("Failed to fetch user by ID");
+    }
   }
 
   async updateUser(id, updatedData) {
-    const user = await userRepository.findById(id);
-    if (!user) throw new Error("User not found");
+    try {
+      const user = await userRepository.findById(id);
+      if (!user) throw new Error("User not found");
 
-    await userRepository.updateUser(id, updatedData);
-    return await userRepository.findUserById(id);
+      await userRepository.updateUser(id, updatedData);
+      return await userRepository.findUserById(id);
+    } catch (error) {
+      console.error("Error in updateUser:", error.message);
+      throw new Error(error.message || "Failed to update user");
+    }
   }
 
   async deleteUser(id) {
-    const user = await userRepository.findById(id);
-    if (!user) throw new Error("User not found");
-    return await userRepository.deleteUser(id);
+    try {
+      const user = await userRepository.findById(id);
+      if (!user) throw new Error("User not found");
+
+      return await userRepository.deleteUser(id);
+    } catch (error) {
+      console.error("Error in deleteUser:", error.message);
+      throw new Error(error.message || "Failed to delete user");
+    }
   }
 
   async getUsers(page = 1, limit = 10) {
-    const offset = (page - 1) * limit;
-    const { rows: users, count: totalItems } = await userRepository.getAll({
-      limit,
-      offset,
-    });
-
-    return {
-      data: users,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(totalItems / limit),
-        totalItems,
+    try {
+      const offset = (page - 1) * limit;
+      const { rows: users, count: totalItems } = await userRepository.getAll({
         limit,
-      },
-    };
+        offset,
+      });
+
+      return {
+        data: users,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalItems / limit),
+          totalItems,
+          limit,
+        },
+      };
+    } catch (error) {
+      console.error("Error in getUsers:", error.message);
+      throw new Error("Failed to fetch users");
+    }
   }
 }
 

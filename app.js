@@ -1,10 +1,20 @@
 import express from "express";
 import sequelize, { connectDB } from "./src/config/database.js";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 
+import appRoute from "./src/routes/index.js";
+import errorMiddleware from "./src/middleware/errorMidlleware.js";
 dotenv.config();
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/v1", appRoute);
+
+app.use(errorMiddleware);
 
 const port = process.env.PORT | 3000;
 
