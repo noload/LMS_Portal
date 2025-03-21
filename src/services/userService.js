@@ -42,7 +42,7 @@ class UserService {
 
   async getUserById(id) {
     try {
-      return await userRepository.findUserById(id);
+      return await userRepository.findById(id);
     } catch (error) {
       console.error("Error in getUserById:", error.message);
       throw new Error("Failed to fetch user by ID");
@@ -54,8 +54,8 @@ class UserService {
       const user = await userRepository.findById(id);
       if (!user) throw new Error("User not found");
 
-      await userRepository.updateUser(id, updatedData);
-      return await userRepository.findUserById(id);
+      await userRepository.update(id, updatedData);
+      return await userRepository.findById(id);
     } catch (error) {
       console.error("Error in updateUser:", error.message);
       throw new Error(error.message || "Failed to update user");
@@ -67,7 +67,7 @@ class UserService {
       const user = await userRepository.findById(id);
       if (!user) throw new Error("User not found");
 
-      return await userRepository.deleteUser(id);
+      return await userRepository.delete(id);
     } catch (error) {
       console.error("Error in deleteUser:", error.message);
       throw new Error(error.message || "Failed to delete user");

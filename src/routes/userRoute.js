@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userController from "../controllers/userController.js";
+import UserController from "../controllers/userController.js";
 import AuthMiddleware from "../middleware/authMiddleware.js";
 
 const router = Router();
@@ -8,11 +8,26 @@ router.get(
   "/",
   AuthMiddleware.authenticate,
   AuthMiddleware.authorizeRoles("Admin"),
-  userController.getAllUsers
+  UserController.getAllUsers
 );
-// router.get("/:id", UserController.getUser);
-// router.put("/:id", UserController.updateUser);
-// router.delete("/:id", UserController.deleteUser);
+router.get(
+  "/:id",
+  AuthMiddleware.authenticate,
+  AuthMiddleware.authorizeRoles("Admin"),
+  UserController.getUser
+);
+router.put(
+  "/:id",
+  AuthMiddleware.authenticate,
+  AuthMiddleware.authorizeRoles("Admin"),
+  UserController.updateUser
+);
+router.delete(
+  "/:id",
+  AuthMiddleware.authenticate,
+  AuthMiddleware.authorizeRoles("Admin"),
+  UserController.deleteUser
+);
 // router.put("/:id/approve", UserController.approveUser);
 
 export default router;

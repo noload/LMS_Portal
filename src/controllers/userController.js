@@ -12,6 +12,57 @@ class UserController {
       next(error);
     }
   }
+
+  async getUser(req, res, next) {
+    try {
+      const { id } = req.params;
+      const user = await userService.getUserById(id);
+      return res.status(200).json({
+        sucess: true,
+        message: "User fetched successfully",
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateUser(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const user = await userService.updateUser(id, req.body);
+      return res.status(200).json({
+        success: true,
+        message: "User Updated successfully",
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteUser(req, res, next) {
+    try {
+      const { id } = req.params;
+      const user = await userService.deleteUser(id);
+      return res.status(200).json({
+        success: true,
+        mmessage: "User deleted successflly",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async approveUser() {
+    try {
+      const { id } = req.params;
+      const user = await userService.approve(id);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

@@ -6,7 +6,9 @@ class UserRepository {
   }
 
   async findByEmail(email) {
-    return await User.findOne({ where: { email } });
+    return await User.findOne({
+      where: { email },
+    });
   }
 
   async create(data) {
@@ -14,7 +16,7 @@ class UserRepository {
   }
 
   async update(id, updateData) {
-    return await User.update();
+    return await User.update(updateData, { where: { id } });
   }
 
   async delete(id) {
@@ -29,6 +31,10 @@ class UserRepository {
       raw: true,
       attributes: { exclude: ["password"] },
     });
+  }
+
+  async approve(id) {
+    return await User.update({ approve: true }, { where: { id } });
   }
 }
 
