@@ -14,6 +14,7 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: "member",
     },
+    isApproved: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
     hooks: {
