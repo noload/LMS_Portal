@@ -19,8 +19,8 @@ const BorrowedBook = sequelize.define(
       references: { model: Book, key: "id" },
       onDelete: "CASCADE",
     },
-    borrowDate: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    returnDate: {
+    borrowedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    returnedAt: {
       type: DataTypes.DATE,
       validate: {
         isAfterBorrow(value) {
@@ -30,7 +30,6 @@ const BorrowedBook = sequelize.define(
         },
       },
     },
-    returnedAt: { type: DataTypes.DATE },
     status: {
       type: DataTypes.ENUM("borrowed", "returned"),
       defaultValue: "borrowed",

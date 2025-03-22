@@ -2,7 +2,7 @@ import express from "express";
 import sequelize, { connectDB } from "./src/config/database.js";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-
+import "./src/models/assosiation.js";
 import appRoute from "./src/routes/index.js";
 import errorMiddleware from "./src/middleware/errorMidlleware.js";
 dotenv.config();
