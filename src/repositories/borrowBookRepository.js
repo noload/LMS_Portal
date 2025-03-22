@@ -29,10 +29,9 @@ class BorrowedBookRepository {
         { model: Book, as: "book" },
       ],
       order: [["borrowedAt", "DESC"]],
-      raw: true, // Keeps the query efficient but requires restructuring
+      raw: true,
     });
 
-    // Restructure the data
     const structuredData = result.rows.map((row) => ({
       id: row.id,
       borrowedAt: row.borrowedAt,

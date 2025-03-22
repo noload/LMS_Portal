@@ -36,7 +36,7 @@ class UserService {
       return await userRepository.findByEmail(email);
     } catch (error) {
       console.error("Error in getUserByEmail:", error.message);
-      throw new Error("Failed to fetch user by email");
+      throw new AppError("Failed to fetch user by email");
     }
   }
 
@@ -45,32 +45,32 @@ class UserService {
       return await userRepository.findById(id);
     } catch (error) {
       console.error("Error in getUserById:", error.message);
-      throw new Error("Failed to fetch user by ID");
+      throw new AppError("Failed to fetch user by ID");
     }
   }
 
   async updateUser(id, updatedData) {
     try {
       const user = await userRepository.findById(id);
-      if (!user) throw new Error("User not found");
+      if (!user) throw new AppError("User not found");
 
       await userRepository.update(id, updatedData);
       return await userRepository.findById(id);
     } catch (error) {
       console.error("Error in updateUser:", error.message);
-      throw new Error(error.message || "Failed to update user");
+      throw new AppError(error.message || "Failed to update user");
     }
   }
 
   async deleteUser(id) {
     try {
       const user = await userRepository.findById(id);
-      if (!user) throw new Error("User not found");
+      if (!user) throw new AppError("User not found");
 
       return await userRepository.delete(id);
     } catch (error) {
       console.error("Error in deleteUser:", error.message);
-      throw new Error(error.message || "Failed to delete user");
+      throw new AppError(error.message || "Failed to delete user");
     }
   }
 
@@ -95,18 +95,18 @@ class UserService {
       };
     } catch (error) {
       console.error("Error in getUsers:", error.message);
-      throw new Error("Failed to fetch users");
+      throw new AppError(error.message || "Failed to fetch users");
     }
   }
 
   async approveUser(id) {
     try {
       const user = await userRepository.findById(id);
-      if (!user) throw new Error("User not found");
+      if (!user) throw new AppError("User not found");
       return await userRepository.approve(id);
     } catch (error) {
       console.error("Error in approveuser:", error.message);
-      throw new Error("Failed to approve users");
+      throw new AppError("Failed to approve users");
     }
   }
 }

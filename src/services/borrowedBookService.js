@@ -5,6 +5,11 @@ import userRepository from "../repositories/userRepository.js";
 class BorrowedBookService {
   async borrowBook(userId, bookId) {
     try {
+      const user = await userRepository.findById(userId);
+      console.log(user);
+      if (!user || !user.isApproved) {
+        throw new AppError("User not approved");
+      }
       const book = await bookRepository.findById(bookId);
       if (!book) throw new AppError("Book not found", 404);
       if (book.availableCopies <= 0)
@@ -17,7 +22,7 @@ class BorrowedBookService {
       return await borrowedBookRepository.create({ userId, bookId });
     } catch (error) {
       console.error("Error in borrowBook:", error.message);
-      throw new AppError("Failed to borrow book", 500);
+      throw new AppError(error.message || "Failed to borrow book", 500);
     }
   }
 

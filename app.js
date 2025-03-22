@@ -1,7 +1,6 @@
 import express from "express";
 import sequelize, { connectDB } from "./src/config/database.js";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
 import "./src/models/assosiation.js";
 import appRoute from "./src/routes/index.js";
 import errorMiddleware from "./src/middleware/errorMidlleware.js";
@@ -20,7 +19,7 @@ const port = process.env.PORT | 3000;
 
 const serverSetup = async () => {
   await connectDB();
-  sequelize.sync().then(() => {
+  sequelize.sync({ alter: true }).then(() => {
     app.listen(5000, () => console.log("Server running on port 5000"));
   });
 };

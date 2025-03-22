@@ -7,7 +7,7 @@ class BookService {
       return await bookRepository.create(bookData);
     } catch (error) {
       console.error("Error in createBook:", error.message);
-      throw new AppError("Failed to add book", 500);
+      throw new AppError(error.message || "Failed to add book", 500);
     }
   }
 
@@ -18,7 +18,7 @@ class BookService {
       return book;
     } catch (error) {
       console.error("Error in getBookById:", error.message);
-      throw new AppError("Failed to fetch book by ID", 500);
+      throw new AppError(error.message || "Failed to fetch book by ID", 500);
     }
   }
 
@@ -45,7 +45,7 @@ class BookService {
       };
     } catch (error) {
       console.error("Error in getAllBooks:", error.message);
-      throw new AppError("Failed to fetch books", 500);
+      throw new AppError(error.message || "Failed to fetch books", 500);
     }
   }
 
@@ -58,7 +58,7 @@ class BookService {
       return await bookRepository.findById(id);
     } catch (error) {
       console.error("Error in updateBook:", error.message);
-      throw new AppError("Failed to update book", 500);
+      throw new AppError(error.message || "Failed to update book", 500);
     }
   }
 
@@ -70,7 +70,7 @@ class BookService {
       return await bookRepository.delete(id);
     } catch (error) {
       console.error("Error in deleteBook:", error.message);
-      throw new AppError("Failed to delete book", 500);
+      throw new AppError(error.message || "Failed to delete book", 500);
     }
   }
 }

@@ -19,7 +19,7 @@ class UserController {
       const user = await userService.getUserById(id);
       return res.status(200).json({
         sucess: true,
-        message: "User fetched successfully",
+        message: user ? "User fetched successfully" : "User not found",
         data: user,
       });
     } catch (error) {
