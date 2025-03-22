@@ -34,7 +34,7 @@ class BorrowedBookController {
 
   async getUserBorrowHistory(req, res, next) {
     try {
-      const userId = req.user.id; 
+      const userId = req.user.id;
 
       const borrowHistory = await borrowedBookService.getUserBorrowHistory(
         userId

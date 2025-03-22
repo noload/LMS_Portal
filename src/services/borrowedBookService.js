@@ -63,8 +63,11 @@ class BorrowedBookService {
     try {
       const offset = (page - 1) * limit;
       const { rows: borrows, count: totalItems } =
-        await borrowedBookRepository.getAll({ limit, offset, filters });
-
+        await borrowedBookRepository.getAllBorrowingHistory({
+          limit,
+          offset,
+          filters,
+        });
       return {
         data: borrows,
         pagination: {
