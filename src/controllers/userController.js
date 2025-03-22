@@ -55,10 +55,15 @@ class UserController {
     }
   }
 
-  async approveUser() {
+  async approveUser(req, res, next) {
     try {
       const { id } = req.params;
-      const user = await userService.approve(id);
+      const user = await userService.approveUser(id);
+      return res.status(200).json({
+        success: true,
+        message: "User approved successfully",
+        data: user,
+      });
     } catch (error) {
       next(error);
     }

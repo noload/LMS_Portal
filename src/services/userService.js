@@ -98,6 +98,17 @@ class UserService {
       throw new Error("Failed to fetch users");
     }
   }
+
+  async approveUser(id) {
+    try {
+      const user = await userRepository.findById(id);
+      if (!user) throw new Error("User not found");
+      return await userRepository.approve(id);
+    } catch (error) {
+      console.error("Error in approveuser:", error.message);
+      throw new Error("Failed to approve users");
+    }
+  }
 }
 
 export default new UserService();

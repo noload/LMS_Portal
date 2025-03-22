@@ -28,6 +28,11 @@ router.delete(
   AuthMiddleware.authorizeRoles("Admin"),
   UserController.deleteUser
 );
-// router.put("/:id/approve", UserController.approveUser);
+router.put(
+  "/:id/approve",
+  AuthMiddleware.authenticate,
+  AuthMiddleware.authorizeRoles("Admin"),
+  UserController.approveUser
+);
 
 export default router;

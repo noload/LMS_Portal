@@ -34,7 +34,10 @@ class UserRepository {
   }
 
   async approve(id) {
-    return await User.update({ approve: true }, { where: { id } });
+    await User.update({ isApproved: true }, { where: { id } });
+    return await User.findOne({
+      where: { id },
+    });
   }
 }
 
